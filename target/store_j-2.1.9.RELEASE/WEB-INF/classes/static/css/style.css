@@ -1,0 +1,8 @@
+a{
+    text-decoration: none !important;
+    color: #666;
+    text-align: center;
+}
+.panel-body.panel-body-noheader.panel-body-noborder{
+	overflow-y: hidden !important;
+}

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	
+	<script type="text/javascript" src="../js/plugin/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/plugin/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/plugin/jquery/jquery.easyui.min.js"></script>
+	
+</head>
+<meta charset="UTF-8">
+<title th:text="#{nationalFlag.index.title}"></title>
+</head>
+<body>
+<div>
+		<div><br/>
+			<div>
+				賣家註冊id 
+				<select class="easyui-combobox" panelHeight="auto" th:name="searchAccountType"  th:id="searchAccountType" >
+					<option th:value="886" th:text="'+'+'886'"></option>
+					<option th:value="86" th:text="'+'+'86'"></option>
+					<option th:value="email" th:text="emall"></option>
+				</select>
+				<input class="easyui-textbox" th:name="searchAccountTypeValue" th:id="searchAccountTypeValue"/>&nbsp;&nbsp;
+				賣場ID
+				<input class="easyui-textbox" th:name=storeId th:id="storeId" />&nbsp;&nbsp;
+				註冊日期
+				<input type="text" th:id="sCreatDate" th:name="sCreatDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"> ~ <input type="text" th:id="eCreatDate" th:name="eCreatDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser">
+			</div><br/>
+			
+			<div style="width: 56.4%">
+				賣家註冊身份
+				<select class="easyui-combobox" panelHeight="auto" th:name="memberCountry" th:id="memberCountry">
+					<option th:value="TH">泰國</option>
+					<option th:value="TW">台灣</option>
+					<option th:value="JP">日本</option>
+					<option th:value="KR">韓國</option>
+					
+				</select>&nbsp;&nbsp;
+				賣家註冊國旗
+				<select class="easyui-combobox" panelHeight="auto" th:name="sellerCountryFlag" th:id="sellerCountryFlag">
+					<option th:value="all">請選擇</option>
+					<option th:value="TW">台灣</option>
+					<option th:value="TH">泰國</option>
+					<option th:value="JP">日本</option>
+					<option th:value="KR">韓國</option>
+				</select>&nbsp;&nbsp;
+				修改日期
+				<input type="text" th:id="sUpdateDate" th:name="sUpdateDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"> ~ <input type="text" th:id="eUpdateDate" th:name="eUpdateDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser">
+				<select class="easyui-combobox" panelHeight="auto" th:name="orderBy" th:id="orderBy">
+					<option th:value="DESC">由新到舊</option>
+					<option th:value="ASC">由舊到新</option>
+					
+				</select>&nbsp;&nbsp;
+				<button th:text="Search"  th:onclick="doSearch('test')" class="easyui-linkbutton" style="width: 120px;height: 25px;float:right"></button>
+				
+			</div>
+		</div>
+		<br/>
+		
+		<!-- Add Dialog -->
+		<div th:id="'dlg'+${list.smId}" th:each="list:${list}" class="easyui-dialog" th:title="編輯賣場顯示國旗" style="width:400px;height:400px;padding:10px;margin:0 auto;" data-options="resizable:true,closed:true">
+			<!-- save -->
+			<form id="'saveform'+${list.smId}" th:action="@{insert}"  method="post" th:inline="text" enctype="multipart/form-data">
+			   <!--  <h2>編輯賣場顯示國旗</h2>
+			    <br/><br/> -->
+				<h4>原有:</h4>
+				<span th:id="'span_member_country'+${list.smId}"  style="color: red;"></span> 
+				<br/> 
+				<h4>變更為:</h4>
+				<select style="width: 50%" th:id="'countryFlag'+${list.smId}" th:name="countryFlag" >
+					<option th:value="null">請選擇</option>
+					<option th:value="TW">TW</option>
+					<option th:value="TH">TH</option>
+					<option th:value="JP">JP</option>
+					<option th:value="KR">KR</option>
+				</select>
+				<br/><br/><br/><br/>
+				<div>
+					<button class="btn btn-secondary" type="button" th:onclick="closeDialog([[${list.smId}]])" th:text="取消" style="margin-right: 20px"></button>
+					<span style="width: 20%"></span>
+					<button  class="btn btn-success" th:id="button_save" type="button" th:onclick="doubleCheck([[${list.smId}]])"  th:text="變更" ></button>
+				</div>
+			</form>	
+		</div>	
+		
+		<div th:id="'dg'+${list.smId}" th:each="list:${list}" class="easyui-dialog" title="請確認" style="width:480px;height:200px;padding:10px">
+            <div>
+	            <h4>此賣場顯示國旗將變更為:
+			       <span style="color: red;" th:id="'dgSpan'+${list.smId}">
+			       測試
+			       </span>
+	            </h4>
+            </div>
+    </div>
+		
+		<!-- data Table -->
+		<table id="dg" class="easyui-datagrid"></table>
+	
+		
+	
+	</div>
+</body>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$( document ).ready(function() {
+		$('.checkKeyword').hide();
+		var msg = [[${message}]];
+		if(msg){
+			alert(msg);
+		}	
+		$('.easyui-dialog').dialog('close');
+		
+		var showMode = $('#showMode').val();
+		//doSearch(showMode);
+		
+	});
+	
+	//日期格式Start
+	function myformatter(date){
+	    var y = date.getFullYear();
+	    var m = date.getMonth()+1;
+	    var d = date.getDate();
+	    return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+	}
+	function myparser(s){
+	    if (!s) return new Date();
+	    var ss = (s.split('-'));
+	    var y = parseInt(ss[0],10);
+	    var m = parseInt(ss[1],10);
+	    var d = parseInt(ss[2],10);
+	    if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+	        return new Date(y,m-1,d);
+	    } else {
+	        return new Date();
+	    }
+	}
+	//日期格式End
+	function doSearch(showMode){
+		var showMode = $('#showMode').val();
+
+		$('#dg').datagrid({
+			url:'search',
+			height: 400,
+			queryParams: {
+				'showMode' : showMode,
+				'searchAccountType' : $('#searchAccountType').combobox('getValue'),
+				'searchAccountTypeValue' : $('#searchAccountTypeValue').val(),
+				'storeId' : $('#storeId').val(),
+				'sCreatDate' : $('#sCreatDate').datebox('getValue'),
+				'eCreatDate' : $('#eCreatDate').datebox('getValue'),
+				'memberCountry' : $('#memberCountry').combobox('getValue'),
+				'sellerCountryFlag' : $('#sellerCountryFlag').combobox('getValue'),
+				'sUpdateDate' : $('#sUpdateDate').datebox('getValue'),
+				'eUpdateDate' : $('#eUpdateDate').datebox('getValue'),
+				'orderBy' : $('#orderBy').combobox('getValue')
+
+			},
+			columns:[
+				[
+				{field:'thSellerCountryFlagLog.updateDate',title:'修改日期',width:'10%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);	
+						if(myJSON.length >2){
+							var updateDate = row.thSellerCountryFlagLog.updateDate;
+							if(updateDate !=null || updateDate != undefined){
+						    	return updateDate;								
+							}else{
+								return "";
+							}
+						}
+					}		
+				},
+				{field:'thMember.tmCreated',title:'註冊日期',width:'10%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);		
+						if(myJSON.length >2){
+							var tmCreated = row.thMember.tmCreated;
+							if(tmCreated !=null || tmCreated != undefined){
+						    	return tmCreated;								
+							}else{
+								return "";
+							}
+						}
+					}	
+				},
+				{field:'thMember.tmMemId',title:'會員帳號',width:'10%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);		
+						if(myJSON.length >2){
+							var tmMemId = row.thMember.tmMemId;
+							if(tmMemId !=null || tmMemId != undefined){
+						    	return tmMemId;								
+							}else{
+								return "";
+							}
+						}
+					}
+				},
+				{field:'smStoreName',title:'店家名稱',width:'15%'},
+				{field:'sellerProductCount',title:'商品數',width:'5%'},
+				{field:'thSellerMain.thMember.tmKycStatus',title:'KYC狀態',width:'5%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);						
+						if(myJSON.length >2){
+							var kyc = row.thMember.tmKycStatus;
+							
+							if(kyc == 'E')
+						    	return '審核中';
+							if(kyc == 'Y')
+								return '審核成功';
+						    
+						    	return kyc;
+						}else{
+							return "";
+						}
+					}	
+				},
+				
+				{field:'thSellerMain.thMember',title:'賣家註冊國家',width:'5%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);		
+						if(myJSON.length >2){
+							var tmCountry = row.thMember.tmCountry;
+							if(tmCountry ==null || tmCountry == undefined){
+						    return 'TH';
+							$('#span_member_country'+smId).text('TH');
+							}else{
+							var smId = row.smId;
+							$('#span_member_country'+smId).text(tmCountry);
+						    	return tmCountry;								
+							}
+						}else{
+							return "";
+						}
+					}	
+				},
+				{field:'thSellerMain.countryFlag',title:'賣場國旗',width:'15%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);		
+							if(myJSON.length >2){
+								return row.countryFlag;							
+							}else{
+							return "";
+						}
+					}	
+				},
+				{field:'updateUser',title:'編輯人',width:'10%',
+					formatter:function(value,row,index){
+						var myJSON = JSON.stringify(row);		
+						if(myJSON.length >2){
+							var updateUser = row.thSellerCountryFlagLog.updateUser;
+							if(updateUser !=null || updateUser != undefined){
+						    	return updateUser;								
+							}else{
+								return "";
+							}
+						}
+					}		
+				},
+				{field:'smId.button',title:'Edit',width:'10%',
+					formatter:function(value,row,index){
+						return '<input type="button" id="'+row.smId+'"  onclick="openDialog(this.id)" class="easyui-linkbutton" value="'+ '編輯' +'"style="width:90%"/>';
+					}
+				},		
+				]
+			],
+			fitColumns:true, //為True時自動擴展/收縮列的大小以適合網格寬度並防止水平滾動。	
+			pagination:true //如果為True，則在datagrid底部顯示分頁工具欄。	
+		});
+		
+		$('#dg').datagrid('reload');    // reload the current page data
+	}
+
+
+	
+	function openDialog(id){	
+		$('#dlg'+id).dialog('open');
+	}
+	function closeDialog(id){
+		$('#dlg'+id).dialog('close');
+	}
+	function doubleCheck(id){
+		$('#dg'+id).dialog({
+			buttons: [{
+	            text:'Ok',
+	            iconCls:'icon-ok',
+	            handler:function(){
+	            	save(id);
+	            }
+	        },{
+	            text:'Cancel',
+	            handler:function(){
+	        		$('#dg'+id).dialog('close');
+	            }
+	        }]
+		});
+		$('#dgSpan'+id).text($('#countryFlag'+id).val());
+		$('#dg'+id).dialog('open');
+	}
+	
+	function save(id){
+		$.ajax({
+			url:'update',
+			type:'post',
+			/* data: $("#saveform"+id).serialize(), */
+			data : {
+				'countryFlag' : $('#countryFlag'+id).val(),
+				'smId' : id
+				},
+			beforeSend:function(){
+					$.messager.progress({
+		                title : 'Update...',
+		                msg : 'Loading...',
+		                interval : 100,
+		            });
+				},
+			success:function(data){
+				if('200'==data){
+					alert('update success');
+					closeDialog(id);
+					$('#dg'+id).dialog('close');
+
+				}else{
+					alert('update fails');
+				}
+				$.messager.progress('close');
+				var showMode = $('#showMode').val();
+				doSearch(showMode);
+			},
+			error:function(textStatus,jqXHR){
+				console.log(textStatus);
+			}
+		});	
+	}
+
+/*]]>*/  
+</script>
+</html>

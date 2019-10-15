@@ -1,0 +1,158 @@
+<style type="text/css">
+.webindex_main {
+	margin: 15px 0 0 40px;
+	padding: 5px;
+	width: 1000px;
+	float: left;
+	/*border-radius: 5px;
+	border: 1px solid #ccc;*/
+}
+
+.webindex_show {
+	margin: 0;
+	padding: 0;
+	width: 1000px;
+	float: left;
+}
+
+.webindex_show_btn {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin: 10px 0 0 5px;
+	padding: 5px 10px;
+	float: right;
+	cursor: pointer;
+}
+
+.webindex_img {
+	margin: 10px 0 0 0;
+	padding: 2px;
+	width: 994px;
+	float: left;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.webindex_img_header {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
+	float: left;
+}
+
+.webindex_img_header_str {
+	margin: 0 0 0 10px;
+	padding: 3px 0;
+	float: left;
+	font-size: 20px;
+}
+
+.webindex_img_box {
+	margin: 3px 0 0 0;
+	padding: 0;
+	width: 994px;
+	float: left;
+}
+
+.webindex_img_box_sm {
+	margin: 0;
+	padding: 0;
+	width: 15px;
+	height: 15px;
+	border: 1px solid #ccc;
+	float: left;
+	background-color: #777;
+}
+
+.webindex_img_box_left {
+	margin: 0 0 0 3px;
+	padding: 0;
+	width: 220px;
+	float: left;
+}
+
+.webindex_img_box_right {
+	margin: 0;
+	padding: 0 0 0 5px;
+	width: 762px;
+	float: left;
+}
+
+.webindex_img_box_file {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 20px;
+}
+
+.webindex_img_box_left_img {
+	margin: 0;
+	padding: 0;
+	width: 218px;
+	height: 100px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	float: left;
+	background-color: #777;
+}
+
+.webindex_img_box_left_img_1 {
+	margin: 8px 0 0 30px;
+	padding: 0;
+	width: 160px;
+	height: 80px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	color: #FFFFFF;
+	text-align: center;
+	line-height: 80px;
+}
+
+.webindex_img_box_left_str {
+	margin: 0;
+	padding: 0;
+	width: 218px;
+	height: 20px;
+	text-align: center;
+	float: left;
+}
+
+.webindex_img_box_file_header {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	background-color: #A9A9A9;
+	float: left;
+}
+
+.webindex_img_box_file_header_str {
+	margin: 0 0 0 5px;
+	font-size: 12px;
+	color: #FFFFFF;
+}
+
+.webindex_img_box_file_con {
+	margin: 2px 0;
+	padding: 0;
+	width: 100%;
+	float: left;
+}
+
+.td1 {
+	text-align: center;
+	padding: 0 5px;
+	min-width:120px;
+	max-width:250px;
+	height:45px;
+}
+
+.input1 {
+	width: 450px;
+}
+.input2 {
+	width: 100px;
+}
+</style>
